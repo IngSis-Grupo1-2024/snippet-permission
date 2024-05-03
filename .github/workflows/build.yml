@@ -1,0 +1,5 @@
+name: Build
+on: [push, pull_request]
+jobs:
+  build: 
+    uses: IngSis-Grupo1-2024/snippet-infra/.github/workflows/build.yml@main
