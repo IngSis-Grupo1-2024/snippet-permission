@@ -1,8 +1,8 @@
-FROM gradle:5.6.0-jdk8 AS build
+FROM gradle:8.7.0-jdk8 AS build
 COPY  . /home/gradle/src
 WORKDIR /home/gradle/src
 RUN gradle assemble
-FROM openjdk:8-jre-slim
+FROM openjdk:23-ea-18-jdk-slim-bookworm
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=production","/app/spring-boot-application.jar"]
