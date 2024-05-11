@@ -1,0 +1,6 @@
+[*.{kt,kts}]
+ktlint_code_style = ktlint_official
+ktlint_max_argument_count = 100
+ktlint_standard_no-wildcard-imports = disabled
+ktlint_standard_max-line-length = 200
+standard.property-naming = camel_case
