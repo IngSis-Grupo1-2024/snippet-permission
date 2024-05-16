@@ -13,11 +13,6 @@ jobs:
         id: meta
         with:
           images: ghcr.io/snippet-permission
-          tags: latest
-          labels: |
-              org.opencontainers.image.title=snippet-permission
-              org.opencontainers.image.description=Snippet Permission Service
-              org.opencontainers.image.url=https://github.com/IngSis-Grupo1-2024/snippet-permission.git
       - uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
@@ -34,11 +29,3 @@ jobs:
           registry: ghcr.io
           username: IngSis-Grupo1-2024
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push to GitHub Packages
-        id: docker_build
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          tags: |
-            ghcr.io/snippet-permission
