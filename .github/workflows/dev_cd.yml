@@ -15,7 +15,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/snippet-permission
+          images: ghcr.io/IngSis-Grupo1-2024/snippet-permission
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
