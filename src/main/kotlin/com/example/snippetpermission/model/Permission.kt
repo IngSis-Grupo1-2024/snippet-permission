@@ -8,12 +8,10 @@ data class Permission(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     var permissionType: PermissionType,
-
     @Column(nullable = false)
     var snippetId: Int,
-
     @Column(nullable = false)
-    var userId: Int
+    var userId: Int,
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,5 +23,5 @@ data class Permission(
 
 enum class PermissionType {
     OWNER,
-    R
+    R,
 }

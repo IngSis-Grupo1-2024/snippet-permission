@@ -14,8 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 
 @SpringBootTest
 @AutoConfigureTestDatabase
-class PermissionServiceTests {
-
+class SnippetPermissionApplicationTests {
     @MockBean
     private lateinit var permissionRepository: PermissionRepository
 
@@ -80,6 +79,4 @@ class PermissionServiceTests {
             permissionService.addPermission(PermissionType.OWNER, 1, 2)
         }
     }
-
-
 }

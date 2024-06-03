@@ -9,13 +9,17 @@ import org.springframework.stereotype.Service
 
 @Service
 class PermissionService(private val permissionRepository: PermissionRepository) {
+    private val permissionChecks =
+        mapOf(
+            PermissionType.OWNER to OwnerPermissionCheck(),
+            PermissionType.R to ReaderPermissionCheck(),
+        )
 
-    private val permissionChecks = mapOf(
-        PermissionType.OWNER to OwnerPermissionCheck(),
-        PermissionType.R to ReaderPermissionCheck()
-    )
-
-    fun addPermission(permissionType: PermissionType, snippetId: Int, userId: Int) {
+    fun addPermission(
+        permissionType: PermissionType,
+        snippetId: Int,
+        userId: Int,
+    ) {
         // Check if the user can share the snippet, just owner can share snippets and they just can give read permissions
         if (!canShare(snippetId, userId)) {
             throw Exception("User does not have permission to share the snippet")
@@ -40,17 +44,27 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
         this.permissionRepository.save(Permission(permissionType, snippetId, userId))
     }
 
-    fun hasPermission(requestedPermission: PermissionType, snippetId: Int, userId: Int): Boolean {
+    fun hasPermission(
+        requestedPermission: PermissionType,
+        snippetId: Int,
+        userId: Int,
+    ): Boolean {
         val permissions = this.permissionRepository.findByUserIdAndSnippetId(userId, snippetId)
         return permissionChecks[requestedPermission]?.hasPermission(permissions) ?: false
     }
 
-    fun getPermissionType(snippetId: Int, userId: Int): PermissionType {
+    fun getPermissionType(
+        snippetId: Int,
+        userId: Int,
+    ): PermissionType {
         val permissions = this.permissionRepository.findByUserIdAndSnippetId(userId, snippetId)
         return permissions.firstOrNull()?.permissionType ?: PermissionType.R
     }
 
-    fun canShare(snippetId: Int, userId: Int): Boolean {
+    fun canShare(
+        snippetId: Int,
+        userId: Int,
+    ): Boolean {
         val permissions = this.permissionRepository.findByUserIdAndSnippetId(userId, snippetId)
         return permissions.any { permission ->
             permission.permissionType == PermissionType.OWNER
