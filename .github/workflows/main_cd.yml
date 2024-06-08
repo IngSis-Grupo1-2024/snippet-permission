@@ -1,0 +1,11 @@
+name: "Continuous Deployment to main"
+on:
+  push:
+    branches:
+      - main
+jobs:
+  push_to_registry:
+    uses: IngSis-Grupo1-2024/snippet-infra/.github/workflows/cd.yml@main
+    with:
+      image-name: snippet-permission
+      env-name: main
