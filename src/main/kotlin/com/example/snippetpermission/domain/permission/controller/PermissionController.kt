@@ -18,6 +18,7 @@ class PermissionController(private val permissionService: PermissionService) {
             permissionRequest.permissionType!!,
             permissionRequest.snippetId,
             permissionRequest.userId,
+            permissionRequest.sharerId,
         )
         return ResponseEntity.ok().build<String>()
     }
@@ -52,4 +53,5 @@ data class PermissionRequest(
     val permissionType: PermissionType? = null,
     val snippetId: Int,
     val userId: Int,
+    val sharerId: Int,
 )

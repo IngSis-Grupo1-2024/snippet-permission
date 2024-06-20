@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: snippet-permission
+  datasource:
+    url: jdbc:postgresql://localhost:5435/db-permissions
+    username: sa
+    password: password
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH0_ISSUER_URI}
+          client-id: ${AUTH0_CLIENT_ID}
+          client-secret: ${AUTH0_CLIENT_SECRET}
+auth0:
+  audience: ${AUTH0_AUDIENCE}
