@@ -19,9 +19,14 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
         permissionType: PermissionType,
         snippetId: Int,
         userId: Int,
+        shearerId: Int,
     ) {
+        if (!doesSnippetExist(snippetId) && permissionType == PermissionType.OWNER) {
+            this.permissionRepository.save(Permission(permissionType, snippetId, userId))
+            return
+        }
         // Check if the user can share the snippet, just owner can share snippets and they just can give read permissions
-        if (!canShare(snippetId, userId)) {
+        if (!canShare(snippetId, shearerId)) {
             throw Exception("User does not have permission to share the snippet")
         }
 
@@ -69,5 +74,9 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
         return permissions.any { permission ->
             permission.permissionType == PermissionType.OWNER
         }
+    }
+
+    fun doesSnippetExist(snippetId: Int): Boolean {
+        return this.permissionRepository.findBySnippetId(snippetId).isNotEmpty()
     }
 }
