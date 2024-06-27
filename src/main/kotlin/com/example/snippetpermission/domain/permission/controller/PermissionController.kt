@@ -1,12 +1,15 @@
 package com.example.snippetpermission.domain.permission.controller
 
+import com.example.snippetpermission.domain.permission.model.dto.SnippetIds
+import com.example.snippetpermission.domain.permission.model.input.PermissionIsAllowedInput
+import com.example.snippetpermission.domain.permission.model.input.PermissionRequest
+import com.example.snippetpermission.domain.permission.model.input.PermissionTypeInput
 import com.example.snippetpermission.domain.permission.service.PermissionService
 import com.example.snippetpermission.model.PermissionType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.oauth2.jwt.Jwt
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class PermissionController(private val permissionService: PermissionService) {
@@ -15,7 +18,7 @@ class PermissionController(private val permissionService: PermissionService) {
         @RequestBody permissionRequest: PermissionRequest,
     ): ResponseEntity<String> {
         permissionService.addPermission(
-            permissionRequest.permissionType!!,
+            permissionRequest.permissionType,
             permissionRequest.snippetId,
             permissionRequest.userId,
             permissionRequest.sharerId,
@@ -23,13 +26,21 @@ class PermissionController(private val permissionService: PermissionService) {
         return ResponseEntity.ok().build<String>()
     }
 
+    @GetMapping("/shared")
+    fun getSharedSnippets(
+        @AuthenticationPrincipal jwt: Jwt
+    ): ResponseEntity<SnippetIds> {
+        val snippetsId = permissionService.getSharedSnippets(jwt.subject)
+        return ResponseEntity.ok(SnippetIds(snippetsId))
+    }
+
     @GetMapping("/is_allowed")
     fun isAllowed(
-        @RequestBody permissionRequest: PermissionRequest,
+        @RequestBody permissionRequest: PermissionIsAllowedInput,
     ): ResponseEntity<Boolean> {
         val hasPermission =
             permissionService.hasPermission(
-                permissionRequest.permissionType!!,
+                permissionRequest.permissionType,
                 permissionRequest.snippetId,
                 permissionRequest.userId,
             )
@@ -38,7 +49,7 @@ class PermissionController(private val permissionService: PermissionService) {
 
     @GetMapping("/get_permission_type")
     fun getPermissionType(
-        @RequestBody permissionRequest: PermissionRequest,
+        @RequestBody permissionRequest: PermissionTypeInput,
     ): ResponseEntity<PermissionType> {
         val permissionType =
             permissionService.getPermissionType(
@@ -48,10 +59,3 @@ class PermissionController(private val permissionService: PermissionService) {
         return ResponseEntity.ok(permissionType)
     }
 }
-
-data class PermissionRequest(
-    val permissionType: PermissionType? = null,
-    val snippetId: Int,
-    val userId: Int,
-    val sharerId: Int,
-)

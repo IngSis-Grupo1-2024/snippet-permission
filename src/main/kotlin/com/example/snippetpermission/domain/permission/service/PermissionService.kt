@@ -17,9 +17,9 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
 
     fun addPermission(
         permissionType: PermissionType,
-        snippetId: Int,
-        userId: Int,
-        shearerId: Int,
+        snippetId: Long,
+        userId: String,
+        shearerId: String = "",
     ) {
         if (!doesSnippetExist(snippetId) && permissionType == PermissionType.OWNER) {
             this.permissionRepository.save(Permission(permissionType, snippetId, userId))
@@ -30,6 +30,14 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
             throw Exception("User does not have permission to share the snippet")
         }
 
+        checkIfUserHasAPreviousPermission(userId, snippetId, permissionType)
+    }
+
+    private fun checkIfUserHasAPreviousPermission(
+        userId: String,
+        snippetId: Long,
+        permissionType: PermissionType
+    ) {
         val permissions = this.permissionRepository.findByUserIdAndSnippetId(userId, snippetId)
 
         // Check if there is already an owner for the snippet
@@ -45,30 +53,31 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
             throw Exception("User was previously a reader and cannot become an owner")
         }
 
-        // If none of the above conditions are met, add the new permission
-        this.permissionRepository.save(Permission(permissionType, snippetId, userId))
+        // If none of the above conditions are met, and if there is no
+        // permission for that user in that snippet,add the new permission,
+        if (permissions.isEmpty()) this.permissionRepository.save(Permission(permissionType, snippetId, userId))
     }
 
     fun hasPermission(
         requestedPermission: PermissionType,
-        snippetId: Int,
-        userId: Int,
+        snippetId: Long,
+        userId: String,
     ): Boolean {
         val permissions = this.permissionRepository.findByUserIdAndSnippetId(userId, snippetId)
         return permissionChecks[requestedPermission]?.hasPermission(permissions) ?: false
     }
 
     fun getPermissionType(
-        snippetId: Int,
-        userId: Int,
+        snippetId: Long,
+        userId: String,
     ): PermissionType {
         val permissions = this.permissionRepository.findByUserIdAndSnippetId(userId, snippetId)
         return permissions.firstOrNull()?.permissionType ?: PermissionType.R
     }
 
     fun canShare(
-        snippetId: Int,
-        userId: Int,
+        snippetId: Long,
+        userId: String,
     ): Boolean {
         val permissions = this.permissionRepository.findByUserIdAndSnippetId(userId, snippetId)
         return permissions.any { permission ->
@@ -76,7 +85,15 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
         }
     }
 
-    fun doesSnippetExist(snippetId: Int): Boolean {
+    fun doesSnippetExist(snippetId: Long): Boolean {
         return this.permissionRepository.findBySnippetId(snippetId).isNotEmpty()
+    }
+
+    fun getSharedSnippets(userId: String): List<Long> {
+        return this.permissionRepository.findByUserId(userId).filter{
+            permission: Permission -> permission.permissionType == PermissionType.R
+        }. map { permission: Permission ->
+            permission.snippetId
+        }
     }
 }

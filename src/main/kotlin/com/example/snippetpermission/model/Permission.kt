@@ -9,16 +9,16 @@ data class Permission(
     @Column(nullable = false)
     var permissionType: PermissionType,
     @Column(nullable = false)
-    var snippetId: Int,
+    var snippetId: Long,
     @Column(nullable = false)
-    var userId: Int,
+    var userId: String,
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     var id: Long = 0
 
-    constructor() : this(PermissionType.R, 1, 1)
+    constructor() : this(PermissionType.R, 1, "1")
 }
 
 enum class PermissionType {
