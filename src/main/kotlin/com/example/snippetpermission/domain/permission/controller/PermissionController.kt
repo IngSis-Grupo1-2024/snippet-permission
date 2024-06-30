@@ -47,14 +47,15 @@ class PermissionController(private val permissionService: PermissionService) {
         return ResponseEntity.ok(hasPermission)
     }
 
-    @GetMapping("/get_permission_type")
+    @GetMapping("/get_permission_type/{snippetId}/{userId}")
     fun getPermissionType(
-        @RequestBody permissionRequest: PermissionTypeInput,
+        @PathVariable snippetId: String,
+        @PathVariable userId: String,
     ): ResponseEntity<PermissionType> {
         val permissionType =
             permissionService.getPermissionType(
-                permissionRequest.snippetId,
-                permissionRequest.userId,
+                snippetId.toLong(),
+                userId,
             )
         return ResponseEntity.ok(permissionType)
     }
