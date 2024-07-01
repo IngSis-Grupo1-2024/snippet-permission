@@ -14,7 +14,6 @@ services:
       DB_NAME: db-permissions
       DB_HOST: postgres_db
       DB_PORT: 5432
-      NEW_RELIC_AGENT_ENABLED: true
       NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
       NEW_RELIC_APP_NAME: ${NEW_RELIC_APP_NAME}
       AUTH_SERVER_URI: ${AUTH_SERVER_URI}
