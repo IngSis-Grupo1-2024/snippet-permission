@@ -1,4 +1,4 @@
-package modules.common.logs
+package com.example.snippetpermission.logs
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component

@@ -3,7 +3,9 @@ version: '3.9'
 services:
   api-permissions:
     container_name: "api-permissions"
-    image: ghcr.io/ingsis-grupo1-2024/snippet-permission-dev:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8083:8083"
     environment:
@@ -13,7 +15,7 @@ services:
       DB_HOST: perm_postgres_db
       DB_PORT: 5432
       NEW_RELIC_APP_NAME: SnippetPermission
-      NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_PERM_KEY}
+      NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
       AUTH_SERVER_URI: ${AUTH_SERVER_URI}
       AUTH_CLIENT_ID: ${AUTH_CLIENT_ID}
       AUTH_CLIENT_SECRET: ${AUTH_CLIENT_SECRET}

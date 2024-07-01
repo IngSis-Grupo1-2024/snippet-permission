@@ -1,4 +1,4 @@
-package modules.common.logs
+package com.example.snippetpermission.logs
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
