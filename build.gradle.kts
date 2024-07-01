@@ -35,6 +35,11 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-test-autoconfigure")
     testImplementation("com.h2database:h2")
+
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    testImplementation("io.projectreactor:reactor-test")
+
 }
 
 tasks.withType<KotlinCompile> {
@@ -77,4 +82,8 @@ tasks.register<JavaExec>("ktlintFormat") {
         "**.kts",
         "!**/build/**",
     )
+}
+
+tasks.bootJar {
+    archiveFileName.set("${archiveBaseName.get()}.${archiveExtension.get()}")
 }
