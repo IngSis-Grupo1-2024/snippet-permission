@@ -2,30 +2,28 @@ version: '3.9'
 
 services:
   api-permissions:
-    container_name: "api-perm"
-    build:
-      context: .
-      dockerfile: Dockerfile
+    container_name: "api-permissions"
+    image: ghcr.io/ingsis-grupo1-2024/snippet-permission-dev:latest
     ports:
       - "8083:8083"
     environment:
       DB_USERNAME: sa
       DB_PASSWORD: password
       DB_NAME: db-permissions
-      DB_HOST: postgres_db
+      DB_HOST: perm_postgres_db
       DB_PORT: 5432
-      NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
-      NEW_RELIC_APP_NAME: ${NEW_RELIC_APP_NAME}
+      NEW_RELIC_APP_NAME: SnippetPermission
+      NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_PERM_KEY}
       AUTH_SERVER_URI: ${AUTH_SERVER_URI}
       AUTH_CLIENT_ID: ${AUTH_CLIENT_ID}
       AUTH_CLIENT_SECRET: ${AUTH_CLIENT_SECRET}
       AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
 
   db-permissions:
-    container_name: postgres_db
+    container_name: perm_postgres_db
     image: postgres:12
     ports:
-      - 5432:5432
+      - "5435:5432"
     environment:
       POSTGRES_USER: sa
       POSTGRES_PASSWORD: password
