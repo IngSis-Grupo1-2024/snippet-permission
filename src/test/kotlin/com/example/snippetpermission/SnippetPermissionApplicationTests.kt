@@ -1,5 +1,9 @@
 package com.example.snippetpermission
 
+import com.example.snippetpermission.domain.permission.model.dto.SnippetIds
+import com.example.snippetpermission.domain.permission.model.input.PermissionIsAllowedInput
+import com.example.snippetpermission.domain.permission.model.input.PermissionRequest
+import com.example.snippetpermission.domain.permission.model.input.PermissionTypeInput
 import com.example.snippetpermission.domain.permission.repository.PermissionRepository
 import com.example.snippetpermission.domain.permission.service.PermissionService
 import com.example.snippetpermission.model.Permission
@@ -79,4 +83,63 @@ class SnippetPermissionApplicationTests {
             permissionService.addPermission(PermissionType.OWNER, 1, "2")
         }
     }
+
+    @Test
+    fun `set and get permission type`() {
+        val permission = Permission()
+        permission.permissionType = PermissionType.OWNER
+        assertEquals(PermissionType.OWNER, permission.permissionType)
+    }
+
+    @Test
+    fun `set and get snippet id`() {
+        val permission = Permission()
+        permission.snippetId = 1
+        assertEquals(1, permission.snippetId)
+    }
+
+    @Test
+    fun `set and get user id`() {
+        val permission = Permission()
+        permission.userId = "1"
+        assertEquals("1", permission.userId)
+    }
+
+    @Test
+    fun `set and get snippets`() {
+        val snippetIds = SnippetIds(listOf(1L, 2L, 3L))
+        assertEquals(listOf(1L, 2L, 3L), snippetIds.snippets)
+    }
+
+    @Test
+    fun `set and get properties`() {
+        val input = PermissionIsAllowedInput(PermissionType.OWNER, 1L, "1")
+        assertEquals(PermissionType.OWNER, input.permissionType)
+        assertEquals(1L, input.snippetId)
+        assertEquals("1", input.userId)
+    }
+
+    @Test
+    fun `set, get properties and share`() {
+        val request = PermissionRequest(PermissionType.OWNER, 1L, "1", "2")
+        assertEquals(PermissionType.OWNER, request.permissionType)
+        assertEquals(1L, request.snippetId)
+        assertEquals("1", request.userId)
+        assertEquals("2", request.sharerId)
+    }
+
+    @Test
+    fun `set and get property`() {
+        val input = PermissionTypeInput(1L, "1")
+        assertEquals(1L, input.snippetId)
+        assertEquals("1", input.userId)
+    }
+
+    @Test
+    fun `id field is initially zero`() {
+        val permission = Permission(PermissionType.OWNER, 1L, "1")
+
+        assertEquals(0L, permission.id)
+    }
+
 }

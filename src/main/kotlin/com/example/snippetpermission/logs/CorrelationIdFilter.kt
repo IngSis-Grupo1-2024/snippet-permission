@@ -18,7 +18,7 @@ class CorrelationIdFilter : OncePerRequestFilter() {
         const val CORRELATION_ID_HEADER = "X-Correlation-Id"
     }
 
-    override fun doFilterInternal(
+    public override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain,
