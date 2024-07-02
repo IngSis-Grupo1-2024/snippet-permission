@@ -23,8 +23,8 @@ class CorrelationIdFilter : OncePerRequestFilter() {
         response: HttpServletResponse,
         filterChain: FilterChain,
     ) {
-        val correlationId = request.getHeader(CORRELATION_ID_HEADER) ?: generateCorrelationId()
-        MDC.put(CORRELATION_ID_KEY, correlationId + generateCorrelationId())
+        val correlationId = request.getHeader(CORRELATION_ID_HEADER) + generateCorrelationId()
+        MDC.put(CORRELATION_ID_KEY, correlationId)
         try {
             filterChain.doFilter(request, response)
         } finally {
