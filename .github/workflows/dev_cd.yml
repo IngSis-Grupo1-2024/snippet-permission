@@ -9,3 +9,9 @@ jobs:
     with:
       image-name: snippet-permission
       env-name: dev
+  deploy_to_vm:
+    uses: IngSis-Grupo1-2024/snippet-infra/.github/workflows/deploy.yml@main
+    needs: push_to_registry
+    secrets: inherit 
+    with:
+      container-name: api-manager
