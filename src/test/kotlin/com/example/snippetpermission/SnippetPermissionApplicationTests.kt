@@ -49,6 +49,15 @@ class SnippetPermissionApplicationTests {
     }
 
     @Test
+    fun `test isAllowed`() {
+        val permission = Permission(PermissionType.OWNER, 1, "1")
+        `when`(permissionRepository.findBySnippetId(1)).thenReturn(listOf(permission))
+        `when`(permissionRepository.findByUserIdAndSnippetId("1", 1)).thenReturn(listOf(permission))
+
+        permissionService.addPermission(PermissionType.R, 1, "2", "1")
+    }
+
+    @Test
     fun `test getPermissionType`() {
         val permission = Permission(PermissionType.OWNER, 1, "1")
         `when`(permissionRepository.findByUserIdAndSnippetId("1", 1)).thenReturn(listOf(permission))
