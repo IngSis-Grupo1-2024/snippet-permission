@@ -70,9 +70,10 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
     }
 
     fun getSharedSnippets(userId: String): List<Long> {
-        return this.permissionRepository.findByUserId(userId).filter{
-            permission: Permission -> permission.permissionType == PermissionType.R
-        }. map { permission: Permission ->
+        return this.permissionRepository.findByUserId(userId).filter {
+                permission: Permission ->
+            permission.permissionType == PermissionType.R
+        }.map { permission: Permission ->
             permission.snippetId
         }
     }
@@ -80,7 +81,7 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
     private fun checkIfUserHasAPreviousPermission(
         userId: String,
         snippetId: Long,
-        permissionType: PermissionType
+        permissionType: PermissionType,
     ) {
         val permissions = this.permissionRepository.findByUserIdAndSnippetId(userId, snippetId)
 
@@ -99,14 +100,17 @@ class PermissionService(private val permissionRepository: PermissionRepository) 
 
     private fun onePermissionPerUser(
         permissionType: PermissionType,
-        permissions: List<Permission>
+        permissions: List<Permission>,
     ) {
         if (permissionType == PermissionType.OWNER && permissions.any { it.permissionType == PermissionType.R }) {
             throw Exception("User was previously a reader and cannot become an owner")
         }
     }
 
-    private fun onlyOneOwnerIsAllowed(permissionType: PermissionType, snippetId: Long) {
+    private fun onlyOneOwnerIsAllowed(
+        permissionType: PermissionType,
+        snippetId: Long,
+    ) {
         if (permissionType == PermissionType.OWNER) {
             val ownerPermissions = this.permissionRepository.findBySnippetId(snippetId)
             if (ownerPermissions.any { it.permissionType == PermissionType.OWNER }) {

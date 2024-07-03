@@ -1,5 +1,6 @@
-package com.example.snippetpermission.domain.permission.controller
+package com.example.snippetpermission
 
+import com.example.snippetpermission.domain.permission.controller.PermissionController
 import com.example.snippetpermission.domain.permission.model.dto.SnippetIds
 import com.example.snippetpermission.domain.permission.model.input.PermissionIsAllowedInput
 import com.example.snippetpermission.domain.permission.model.input.PermissionRequest
@@ -15,7 +16,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.oauth2.jwt.Jwt
 
 class PermissionControllerTests {
-
     private lateinit var permissionController: PermissionController
     private val permissionService: PermissionService = Mockito.mock(PermissionService::class.java)
 
@@ -48,7 +48,7 @@ class PermissionControllerTests {
                 permissionRequest.snippetId,
                 permissionRequest.userId,
                 permissionRequest.sharerId,
-            )
+            ),
         ).thenThrow(RuntimeException("Error"))
 
         val response = permissionController.addPermission(permissionRequest)
@@ -75,7 +75,7 @@ class PermissionControllerTests {
                 permissionRequest.permissionType,
                 permissionRequest.snippetId,
                 permissionRequest.userId,
-            )
+            ),
         ).thenReturn(true)
 
         val response = permissionController.isAllowed(permissionRequest)
@@ -91,7 +91,7 @@ class PermissionControllerTests {
                 permissionRequest.permissionType,
                 permissionRequest.snippetId,
                 permissionRequest.userId,
-            )
+            ),
         ).thenReturn(false)
 
         val response = permissionController.isAllowed(permissionRequest)

@@ -141,5 +141,4 @@ class SnippetPermissionApplicationTests {
 
         assertEquals(0L, permission.id)
     }
-
 }

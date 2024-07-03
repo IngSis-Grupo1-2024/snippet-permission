@@ -41,9 +41,10 @@ internal class CorrelationIdFilterTest {
         MockitoAnnotations.openMocks(this)
         correlationIdFilter = CorrelationIdFilter()
         requestLogFilter = RequestLogFilter()
-        val request = MockServerHttpRequest
-            .method(HttpMethod.GET, URI("/test"))
-            .build()
+        val request =
+            MockServerHttpRequest
+                .method(HttpMethod.GET, URI("/test"))
+                .build()
         exchange = MockServerWebExchange.from(request)
     }
 
@@ -54,7 +55,7 @@ internal class CorrelationIdFilterTest {
         correlationIdFilter!!.doFilterInternal(request, response!!, filterChain!!)
         Assertions.assertNull(
             MDC.get(CorrelationIdFilter.CORRELATION_ID_KEY),
-            "Correlation ID should be removed from MDC"
+            "Correlation ID should be removed from MDC",
         )
     }
 
@@ -65,7 +66,6 @@ internal class CorrelationIdFilterTest {
         StepVerifier.create(filter)
             .expectComplete()
             .verify()
-
     }
 
     @Test
