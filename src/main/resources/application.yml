@@ -16,8 +16,12 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${AUTH_SERVER_URI}
-          client-id: ${AUTH_CLIENT_ID}
-          client-secret: ${AUTH_CLIENT_SECRET}
+          issuer-uri: ${AUTH_SERVER_URI:https://dev-dxazwu1rijz501rx.us.auth0.com/}
+          client-id: ${AUTH_CLIENT_ID:client-id}
+          client-secret: ${AUTH_CLIENT_SECRET:client-secret}
 auth0:
-  audience: ${AUTH0_AUDIENCE}
+  audience: ${AUTH0_AUDIENCE:https://snippet-searcher}
+
+
+server:
+  port: 8083

@@ -29,16 +29,9 @@ class OAuth2ResourceServerSecurityConfiguration(
         http
             .authorizeHttpRequests {
                 it
-                    .requestMatchers(GET, "/is_allowed").hasAuthority("SCOPE_read:snippet")
-                    .requestMatchers(GET, "/get_permission_type").hasAuthority("SCOPE_read:snippet")
-                    .requestMatchers(GET, "/shared").hasAuthority("SCOPE_read:snippet")
-                    .requestMatchers(POST, "/map_permission").hasAuthority("SCOPE_write:snippet")
                     .anyRequest().authenticated()
             }
             .oauth2ResourceServer { it.jwt(withDefaults()) }
-            .cors {
-                it.disable()
-            }
             .csrf {
                 it.disable()
             }
