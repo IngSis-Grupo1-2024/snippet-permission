@@ -1,1 +1,1 @@
-rootProject.name = "SnippetPermission"
+rootProject.name = "snippet-permission"

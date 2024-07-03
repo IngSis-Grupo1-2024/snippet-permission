@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class PermissionController(private val permissionService: PermissionService) {
-
     private val logger = LoggerFactory.getLogger(PermissionController::class.java)
+
     @PostMapping("/map_permission")
     fun addPermission(
         @RequestBody permissionRequest: PermissionRequest,
@@ -29,7 +29,7 @@ class PermissionController(private val permissionService: PermissionService) {
                 permissionRequest.sharerId,
             )
             return ResponseEntity.ok().build()
-        } catch (e: Exception){
+        } catch (e: Exception) {
             logger.warn(e.message)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
         }
@@ -37,7 +37,7 @@ class PermissionController(private val permissionService: PermissionService) {
 
     @GetMapping("/shared")
     fun getSharedSnippets(
-        @AuthenticationPrincipal jwt: Jwt
+        @AuthenticationPrincipal jwt: Jwt,
     ): ResponseEntity<SnippetIds> {
         logger.info("Getting shared snippets id for user ${jwt.subject}")
         val snippetsId = permissionService.getSharedSnippets(jwt.subject)
@@ -48,16 +48,20 @@ class PermissionController(private val permissionService: PermissionService) {
     fun isAllowed(
         @RequestBody permissionRequest: PermissionIsAllowedInput,
     ): ResponseEntity<Boolean> {
-        logger.info("Checking if user ${permissionRequest.userId} is allowed " +
-                "for snippet ${permissionRequest.snippetId} for the permission ${permissionRequest.permissionType}")
+        logger.info(
+            "Checking if user ${permissionRequest.userId} is allowed " +
+                "for snippet ${permissionRequest.snippetId} for the permission ${permissionRequest.permissionType}",
+        )
         val hasPermission =
             permissionService.hasPermission(
                 permissionRequest.permissionType,
                 permissionRequest.snippetId,
                 permissionRequest.userId,
             )
-        logger.info("Permission ${permissionRequest.permissionType} is $hasPermission " +
-                "for snippet ${permissionRequest.snippetId} to user ${permissionRequest.userId}")
+        logger.info(
+            "Permission ${permissionRequest.permissionType} is $hasPermission " +
+                "for snippet ${permissionRequest.snippetId} to user ${permissionRequest.userId}",
+        )
         return ResponseEntity.ok(hasPermission)
     }
 
