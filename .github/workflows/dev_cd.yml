@@ -14,4 +14,4 @@ jobs:
     needs: push_to_registry
     secrets: inherit 
     with:
-      container-name: api-manager
+      container-name: api-permissions
